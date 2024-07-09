@@ -3,21 +3,17 @@ const path = require('path');
 
 let isDev;
 
-// Utilisez une fonction asynchrone auto-exécutante
 (async () => {
     if (app.isPackaged) {
         isDev = false;
     } else {
-        // Utilisez une importation dynamique avec 'import()'
         const { default: dev } = await import('electron-is-dev');
         isDev = dev;
     }
 
-    // Maintenant, utilisez 'isDev' comme nécessaire dans votre application
-    console.log('Mode de développement :', isDev);
+    console.log('Development mode:', isDev);
 
-    // Créer la fenêtre une fois que isDev est défini
-    createWindow();
+    app.on('ready', createWindow);
 })();
 
 function createWindow() {
@@ -28,7 +24,6 @@ function createWindow() {
             nodeIntegration: true,
             contextIsolation: false,
             preload: path.join(__dirname, 'preload.js'),
-            webSecurity: false, // Disable web security to avoid CSP issues
         },
     });
 
@@ -38,27 +33,23 @@ function createWindow() {
             : `file://${path.join(__dirname, 'dist/index.html')}`
     );
 
-    mainWindow.webContents.session.webRequest.onHeadersReceived((details, callback) => {
+    win.webContents.session.webRequest.onHeadersReceived((details, callback) => {
         callback({
-          responseHeaders: {
-            ...details.responseHeaders,
-            'Content-Security-Policy': [
-              "default-src 'self';",
-              "script-src 'self';",
-              "style-src 'self' 'unsafe-inline';",
-              "img-src 'self' data:;",
-              "connect-src 'self' http://localhost:5000;", // Allow connections to localhost:5000
-              "font-src 'self';",
-              "object-src 'none';"
-            ].join(' ')
-          }
+            responseHeaders: {
+                ...details.responseHeaders,
+                'Content-Security-Policy': [
+                    "default-src 'self';",
+                    "script-src 'self';",
+                    "style-src 'self' 'unsafe-inline';",
+                    "img-src 'self' data:;",
+                    "connect-src 'self' http://localhost:5000;",
+                    "font-src 'self';",
+                    "object-src 'none';"
+                ].join(' '),
+            },
         });
-      });
+    });
 }
-
-app.on('ready', () => {
-    // La logique asynchrone est exécutée avant la création de la fenêtre
-});
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {

@@ -1,5 +1,8 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const isDev = process.env.NODE_ENV === 'development';
 
 module.exports = {
     entry: './src/index.js',
@@ -7,7 +10,7 @@ module.exports = {
         path: path.join(__dirname, 'dist'),
         filename: 'bundle.js'
     },
-    mode: 'development', // ou 'production'
+    mode: isDev ? 'development' : 'production',
     module: {
         rules: [
             {
@@ -18,8 +21,15 @@ module.exports = {
                 }
             },
             {
-              test: /\.css$/,
-              use: ['style-loader', 'css-loader'],
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader'],
+            },
+            {
+                test: /\.(png|jpg|gif|svg)$/,
+                type: 'asset/resource',
+                generator: {
+                    filename: 'images/[hash][ext][query]'
+                }
             },
         ]
     },
@@ -32,7 +42,13 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: './public/index.html'
+            template: './public/index.html',
+            filename: 'index.html', // ensure it outputs as index.html
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: 'public', to: '', globOptions: { ignore: ['**/index.html'] } } // copies everything except index.html
+            ]
         })
     ],
     devServer: {
@@ -41,5 +57,6 @@ module.exports = {
         },
         compress: true,
         port: 9000
-    }
+    },
+    devtool: isDev ? 'eval-source-map' : 'source-map'
 };

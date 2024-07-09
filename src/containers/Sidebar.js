@@ -8,14 +8,13 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="header">
-        <img src="/logo.png" alt="App Logo" className="logo" />
         <h1 className="app-name">Task Manager</h1>
       </div>
       <NavLink exact="true" to="/" activeClassName="active">{t('routine')}</NavLink>
       <NavLink to="/tasks" activeClassName="active">{t('tasks')}</NavLink>
       <NavLink to="/reminders" activeClassName="active">{t('calendar')}</NavLink>
       <NavLink to="/resume" activeClassName="active">{t('resume')}</NavLink>
-      <NavLink to="/activities" activeClassName="active">{t('activity')}</NavLink>
+      {/*<NavLink to="/activities" activeClassName="active">{t('activity')}</NavLink>*/}
       <NavLink to="/settings" activeClassName="active">{t('settings')}</NavLink>
       <div className="footer">
         <p>© 2024 Madick A.C.</p>
