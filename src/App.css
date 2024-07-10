@@ -13,6 +13,8 @@
   height: 100vh;
   color: #ecf0f1;
   text-align: center;
+  position: relative;
+  z-index: 10;
 }
 
 .sidebar a {

@@ -8,9 +8,9 @@ function Sidebar() {
   return (
     <div className="sidebar">
       <div className="header">
-        <h1 className="app-name">Task Manager</h1>
+        <h1 className="app-name">Day Manager</h1>
       </div>
-      <NavLink exact="true" to="/" activeClassName="active">{t('routine')}</NavLink>
+      <NavLink exact to="/" activeClassName="active">{t('routine')}</NavLink>
       <NavLink to="/tasks" activeClassName="active">{t('tasks')}</NavLink>
       <NavLink to="/reminders" activeClassName="active">{t('calendar')}</NavLink>
       <NavLink to="/resume" activeClassName="active">{t('resume')}</NavLink>

@@ -6,25 +6,24 @@ let isDev;
 (async () => {
     if (app.isPackaged) {
         isDev = false;
+        createWindow();
     } else {
-        const { default: dev } = await import('electron-is-dev');
-        isDev = dev;
+        isDev = await import('electron-is-dev').then(mod => mod.default);
+        console.log('Mode de développement :', isDev);
+        createWindow();
     }
-
-    console.log('Development mode:', isDev);
-
-    app.on('ready', createWindow);
 })();
 
 function createWindow() {
     const win = new BrowserWindow({
-        width: 800,
-        height: 600,
+        width: 1200,
+        height: 900,
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
             preload: path.join(__dirname, 'preload.js'),
-        },
+            webSecurity: false
+        }
     });
 
     win.loadURL(
@@ -42,11 +41,11 @@ function createWindow() {
                     "script-src 'self';",
                     "style-src 'self' 'unsafe-inline';",
                     "img-src 'self' data:;",
-                    "connect-src 'self' http://localhost:5000;",
+                    "connect-src 'self' http://localhost:5000;", // Allow connections to localhost:5000
                     "font-src 'self';",
                     "object-src 'none';"
-                ].join(' '),
-            },
+                ].join(' ')
+            }
         });
     });
 }
