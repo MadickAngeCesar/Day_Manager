@@ -1,0 +1,9 @@
+# Build directories and files
+dist/*
+release/*
+
+# Node directories and files
+node_modules/*
+
+# Editor directories and files
+.vscode/*
