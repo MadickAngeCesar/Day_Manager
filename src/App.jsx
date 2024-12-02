@@ -1,11 +1,11 @@
-import React, { Suspense } from 'react'
-import './App.css'
-import { HashRouter as Router } from 'react-router-dom'
-import { ActivitiesProvider } from './context/ActivitiesContext'
-import { ToastProvider } from './components/Toast'
+import React, { Suspense } from "react";
+import "./App.css";
+import { HashRouter as Router } from "react-router-dom";
+import { ActivitiesProvider } from "./context/ActivitiesContext";
+import { ToastProvider } from "./components/Toast";
 
-const Sidebar = React.lazy(() => import('./containers/Sidebar'))
-const MainContent = React.lazy(() => import('./containers/MainContent'))
+const Sidebar = React.lazy(() => import("./containers/Sidebar"));
+const MainContent = React.lazy(() => import("./containers/MainContent"));
 
 function App() {
   return (
@@ -21,7 +21,7 @@ function App() {
         </ActivitiesProvider>
       </ToastProvider>
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;

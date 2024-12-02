@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 export const useNotification = () => {
-  const [permission, setPermission] = useState('default');
+  const [permission, setPermission] = useState("default");
 
   useEffect(() => {
     const checkPermission = async () => {
-      if (!('Notification' in window)) {
-        console.error('This browser does not support notifications');
+      if (!("Notification" in window)) {
+        console.error("This browser does not support notifications");
         return;
       }
 
@@ -18,8 +18,8 @@ export const useNotification = () => {
   }, []);
 
   const scheduleNotification = (title, options, delay) => {
-    if (permission !== 'granted') {
-      console.warn('Notification permission not granted');
+    if (permission !== "granted") {
+      console.warn("Notification permission not granted");
       return;
     }
 
@@ -27,7 +27,7 @@ export const useNotification = () => {
       try {
         new Notification(title, options);
       } catch (error) {
-        console.error('Error creating notification:', error);
+        console.error("Error creating notification:", error);
       }
     }, delay);
 

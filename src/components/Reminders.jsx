@@ -1,18 +1,18 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 const Reminders = () => {
   const { t } = useTranslation();
   const [reminders, setReminders] = useState(() => {
-    const savedReminders = localStorage.getItem('reminders');
+    const savedReminders = localStorage.getItem("reminders");
     return savedReminders ? JSON.parse(savedReminders) : [];
   });
 
   useEffect(() => {
-    localStorage.setItem('reminders', JSON.stringify(reminders));
+    localStorage.setItem("reminders", JSON.stringify(reminders));
   }, [reminders]);
 
   const addReminder = (newReminder) => {
@@ -20,12 +20,12 @@ const Reminders = () => {
   };
 
   const deleteReminder = (reminderId) => {
-    setReminders(reminders.filter(reminder => reminder.id !== reminderId));
+    setReminders(reminders.filter((reminder) => reminder.id !== reminderId));
   };
 
   return (
     <div className="reminders-container">
-      <h2>{t('reminders')}</h2>
+      <h2>{t("reminders")}</h2>
       <ReminderList reminders={reminders} deleteReminder={deleteReminder} />
       <AddReminderForm addReminder={addReminder} />
     </div>
@@ -39,20 +39,24 @@ const ReminderList = ({ reminders, deleteReminder }) => {
       <table>
         <thead>
           <tr>
-            <th>{t('event')}</th>
-            <th>{t('date')} {t('time')}</th>
-            <th>{t('description')}</th>
-            <th>{t('operations')}</th>
+            <th>{t("event")}</th>
+            <th>
+              {t("date")} {t("time")}
+            </th>
+            <th>{t("description")}</th>
+            <th>{t("operations")}</th>
           </tr>
         </thead>
         <tbody>
-          {reminders.map(reminder => (
+          {reminders.map((reminder) => (
             <tr key={reminder.id}>
               <td>{reminder.title}</td>
               <td>{reminder.time}</td>
               <td>{reminder.description}</td>
               <td>
-                <button onClick={() => deleteReminder(reminder.id)}>{t('delete')}</button>
+                <button onClick={() => deleteReminder(reminder.id)}>
+                  {t("delete")}
+                </button>
               </td>
             </tr>
           ))}
@@ -64,9 +68,9 @@ const ReminderList = ({ reminders, deleteReminder }) => {
 
 const AddReminderForm = ({ addReminder }) => {
   const { t } = useTranslation();
-  const [title, setTitle] = useState('');
-  const [time, setTime] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [time, setTime] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -74,12 +78,12 @@ const AddReminderForm = ({ addReminder }) => {
       id: new Date().getTime(),
       title,
       time,
-      description
+      description,
     };
     addReminder(newReminder);
-    setTitle('');
-    setTime('');
-    setDescription('');
+    setTitle("");
+    setTime("");
+    setDescription("");
   };
 
   return (
@@ -88,7 +92,7 @@ const AddReminderForm = ({ addReminder }) => {
         type="text"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder={t('event')}
+        placeholder={t("event")}
         required
       />
       <input
@@ -101,9 +105,9 @@ const AddReminderForm = ({ addReminder }) => {
         type="text"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder={t('description')}
+        placeholder={t("description")}
       />
-      <button type="submit">{t('add')}</button>
+      <button type="submit">{t("add")}</button>
     </form>
   );
 };

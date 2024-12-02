@@ -1,4 +1,9 @@
-import React, { createContext, useContext, useReducer, useCallback } from 'react';
+import React, {
+  createContext,
+  useContext,
+  useReducer,
+  useCallback,
+} from "react";
 
 const ActivitiesContext = createContext();
 
@@ -9,12 +14,12 @@ const initialState = {
 };
 
 const actionTypes = {
-  SET_ACTIVITIES: 'SET_ACTIVITIES',
-  ADD_ACTIVITY: 'ADD_ACTIVITY',
-  UPDATE_ACTIVITY: 'UPDATE_ACTIVITY',
-  DELETE_ACTIVITY: 'DELETE_ACTIVITY',
-  SET_LOADING: 'SET_LOADING',
-  SET_ERROR: 'SET_ERROR',
+  SET_ACTIVITIES: "SET_ACTIVITIES",
+  ADD_ACTIVITY: "ADD_ACTIVITY",
+  UPDATE_ACTIVITY: "UPDATE_ACTIVITY",
+  DELETE_ACTIVITY: "DELETE_ACTIVITY",
+  SET_LOADING: "SET_LOADING",
+  SET_ERROR: "SET_ERROR",
 };
 
 function activitiesReducer(state, action) {
@@ -42,7 +47,9 @@ function activitiesReducer(state, action) {
     case actionTypes.DELETE_ACTIVITY:
       return {
         ...state,
-        activities: state.activities.filter((_, index) => index !== action.payload),
+        activities: state.activities.filter(
+          (_, index) => index !== action.payload
+        ),
         loading: false,
       };
     case actionTypes.SET_LOADING:
@@ -111,7 +118,7 @@ export function ActivitiesProvider({ children }) {
 export function useActivities() {
   const context = useContext(ActivitiesContext);
   if (context === undefined) {
-    throw new Error('useActivities must be used within an ActivitiesProvider');
+    throw new Error("useActivities must be used within an ActivitiesProvider");
   }
   return context;
 }

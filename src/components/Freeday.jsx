@@ -1,28 +1,28 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from 'react';
-import '../App.css';
-import { useTranslation } from 'react-i18next';
-import { useAlarms } from './utils/useAlarms'; // Adjust the import path as needed
+import React, { useState, useEffect } from "react";
+import "../App.css";
+import { useTranslation } from "react-i18next";
+import { useAlarms } from "./utils/useAlarms"; // Adjust the import path as needed
 
 function Freeday() {
   const { t } = useTranslation();
   const { playAlarm, stopAlarm, isAlarmPlaying } = useAlarms();
   const [routines, setRoutines] = useState([]);
   const [newRoutine, setNewRoutine] = useState({
-    startTime: '',
-    endTime: '',
+    startTime: "",
+    endTime: "",
     reminder: false,
-    activity: '',
-    interval: 0
+    activity: "",
+    interval: 0,
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [nonWorkingDays, setNonWorkingDays] = useState(
-    JSON.parse(localStorage.getItem('nonWorkingDays')) || {}
+    JSON.parse(localStorage.getItem("nonWorkingDays")) || {}
   );
 
   useEffect(() => {
-    const savedRoutines = JSON.parse(localStorage.getItem('routines')) || [];
+    const savedRoutines = JSON.parse(localStorage.getItem("routines")) || [];
     setRoutines(savedRoutines);
   }, []);
 
@@ -37,8 +37,10 @@ function Freeday() {
     if (isNonWorkingDay) {
       routines.forEach((routine) => {
         if (routine.reminder) {
-          const startTime = new Date(now.toDateString() + ' ' + routine.startTime);
-          const endTime = new Date(now.toDateString() + ' ' + routine.endTime);
+          const startTime = new Date(
+            now.toDateString() + " " + routine.startTime
+          );
+          const endTime = new Date(now.toDateString() + " " + routine.endTime);
 
           if (startTime > now) {
             const startAlarm = setTimeout(() => {
@@ -48,7 +50,9 @@ function Freeday() {
           }
 
           if (routine.interval > 0) {
-            let snoozeTime = new Date(startTime.getTime() + routine.interval * 60000);
+            let snoozeTime = new Date(
+              startTime.getTime() + routine.interval * 60000
+            );
             while (snoozeTime < endTime) {
               if (snoozeTime > now) {
                 const snoozeAlarm = setTimeout(() => {
@@ -56,7 +60,9 @@ function Freeday() {
                 }, snoozeTime - now);
                 alarms.push(snoozeAlarm);
               }
-              snoozeTime = new Date(snoozeTime.getTime() + routine.interval * 60000);
+              snoozeTime = new Date(
+                snoozeTime.getTime() + routine.interval * 60000
+              );
             }
           }
         }
@@ -69,13 +75,21 @@ function Freeday() {
   const addOrUpdateRoutine = () => {
     const updatedRoutines =
       editingIndex !== null
-        ? routines.map((routine, index) => (index === editingIndex ? newRoutine : routine))
+        ? routines.map((routine, index) =>
+            index === editingIndex ? newRoutine : routine
+          )
         : [...routines, newRoutine];
 
     setRoutines(updatedRoutines);
-    localStorage.setItem('routines', JSON.stringify(updatedRoutines));
+    localStorage.setItem("routines", JSON.stringify(updatedRoutines));
     setEditingIndex(null);
-    setNewRoutine({ startTime: '', endTime: '', reminder: false, activity: '', interval: 0 });
+    setNewRoutine({
+      startTime: "",
+      endTime: "",
+      reminder: false,
+      activity: "",
+      interval: 0,
+    });
   };
 
   const editRoutine = (index) => {
@@ -86,14 +100,14 @@ function Freeday() {
   const deleteRoutine = (index) => {
     const updatedRoutines = routines.filter((_, i) => i !== index);
     setRoutines(updatedRoutines);
-    localStorage.setItem('routines', JSON.stringify(updatedRoutines));
+    localStorage.setItem("routines", JSON.stringify(updatedRoutines));
   };
 
   const handleInputChange = (e) => {
     const { name, value, type, checked } = e.target;
     setNewRoutine({
       ...newRoutine,
-      [name]: type === 'checkbox' ? checked : value
+      [name]: type === "checkbox" ? checked : value,
     });
   };
 
@@ -101,17 +115,25 @@ function Freeday() {
     const { value, checked } = e.target;
     setNonWorkingDays((prev) => {
       const newDays = { ...prev, [value]: checked };
-      localStorage.setItem('nonWorkingDays', JSON.stringify(newDays));
+      localStorage.setItem("nonWorkingDays", JSON.stringify(newDays));
       return newDays;
     });
   };
 
   return (
     <div className="routines">
-      <h2>{t('routines')}</h2>
+      <h2>{t("routines")}</h2>
       <div className="non-working-days">
-        <h3>{t('nonWorkingDays')}</h3>
-        {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((day, index) => (
+        <h3>{t("nonWorkingDays")}</h3>
+        {[
+          "Sunday",
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+        ].map((day, index) => (
           <label key={index}>
             <input
               type="checkbox"
@@ -126,12 +148,12 @@ function Freeday() {
       <table>
         <thead>
           <tr>
-            <th>{t('startTime')}</th>
-            <th>{t('endTime')}</th>
-            <th>{t('reminder')}</th>
-            <th>{t('activity')}</th>
-            <th>{t('interval')}</th>
-            <th>{t('operations')}</th>
+            <th>{t("startTime")}</th>
+            <th>{t("endTime")}</th>
+            <th>{t("reminder")}</th>
+            <th>{t("activity")}</th>
+            <th>{t("interval")}</th>
+            <th>{t("operations")}</th>
           </tr>
         </thead>
         <tbody>
@@ -139,7 +161,8 @@ function Freeday() {
             .map((routine, index) => ({ ...routine, originalIndex: index }))
             .sort(
               (a, b) =>
-                new Date(`1970-01-01T${a.startTime}`) - new Date(`1970-01-01T${b.startTime}`)
+                new Date(`1970-01-01T${a.startTime}`) -
+                new Date(`1970-01-01T${b.startTime}`)
             )
             .map((routine) => (
               <tr key={routine.originalIndex}>
@@ -151,18 +174,26 @@ function Freeday() {
                     checked={routine.reminder}
                     onChange={(e) => {
                       const updatedRoutines = [...routines];
-                      updatedRoutines[routine.originalIndex].reminder = e.target.checked;
+                      updatedRoutines[routine.originalIndex].reminder =
+                        e.target.checked;
                       setRoutines(updatedRoutines);
-                      localStorage.setItem('routines', JSON.stringify(updatedRoutines));
+                      localStorage.setItem(
+                        "routines",
+                        JSON.stringify(updatedRoutines)
+                      );
                     }}
                   />
                 </td>
                 <td>{routine.activity}</td>
-                <td>{routine.interval === 0 ? 'None' : `${routine.interval} mins`}</td>
                 <td>
-                  <button onClick={() => editRoutine(routine.originalIndex)}>{t('update')}</button>
+                  {routine.interval === 0 ? "None" : `${routine.interval} mins`}
+                </td>
+                <td>
+                  <button onClick={() => editRoutine(routine.originalIndex)}>
+                    {t("update")}
+                  </button>
                   <button onClick={() => deleteRoutine(routine.originalIndex)}>
-                    {t('delete')}
+                    {t("delete")}
                   </button>
                 </td>
               </tr>
@@ -212,13 +243,13 @@ function Freeday() {
             </td>
             <td>
               <button onClick={addOrUpdateRoutine}>
-                {editingIndex !== null ? t('update') : t('addRoutine')}
+                {editingIndex !== null ? t("update") : t("addRoutine")}
               </button>
             </td>
           </tr>
         </tbody>
       </table>
-      {isAlarmPlaying && <button onClick={stopAlarm}>{t('stopAlarm')}</button>}
+      {isAlarmPlaying && <button onClick={stopAlarm}>{t("stopAlarm")}</button>}
     </div>
   );
 }

@@ -1,14 +1,14 @@
 /* eslint-disable prettier/prettier */
-import React, { Suspense } from 'react'
-import { Route, Routes } from 'react-router-dom'
-import '../App.css'
+import React, { Suspense } from "react";
+import { Route, Routes } from "react-router-dom";
+import "../App.css";
 
-const Routines = React.lazy(() => import('../components/Routines'))
-const Freeday = React.lazy(() => import('../components/Freeday'))
-const Tasks = React.lazy(() => import('../components/Tasks'))
-const Reminders = React.lazy(() => import('../components/Reminders'))
-const Resume = React.lazy(() => import('../components/Resume'))
-const SettingsPage = React.lazy(() => import('../components/Settings'))
+const Routines = React.lazy(() => import("../components/Routines"));
+const Freeday = React.lazy(() => import("../components/Freeday"));
+const Tasks = React.lazy(() => import("../components/Tasks"));
+const Reminders = React.lazy(() => import("../components/Reminders"));
+const Resume = React.lazy(() => import("../components/Resume"));
+const SettingsPage = React.lazy(() => import("../components/Settings"));
 // const Activities = React.lazy(() => import('../components/Activities'));
 
 function MainContent() {
@@ -26,7 +26,7 @@ function MainContent() {
         </Routes>
       </Suspense>
     </div>
-  )
+  );
 }
 
-export default MainContent
+export default MainContent;

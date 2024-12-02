@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
-const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'video/mp4', 'audio/mp3'];
+const ALLOWED_TYPES = ["image/jpeg", "image/png", "video/mp4", "audio/mp3"];
 
 export const useFileHandler = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,15 +9,15 @@ export const useFileHandler = () => {
 
   const validateFile = (file) => {
     if (!file) {
-      throw new Error('No file provided');
+      throw new Error("No file provided");
     }
 
     if (file.size > MAX_FILE_SIZE) {
-      throw new Error('File size exceeds 5MB limit');
+      throw new Error("File size exceeds 5MB limit");
     }
 
     if (!ALLOWED_TYPES.includes(file.type)) {
-      throw new Error('File type not supported');
+      throw new Error("File type not supported");
     }
 
     return true;
@@ -27,19 +27,19 @@ export const useFileHandler = () => {
     try {
       setIsLoading(true);
       setError(null);
-      
+
       validateFile(file);
 
       const formData = new FormData();
-      formData.append('file', file);
+      formData.append("file", file);
 
       const response = await fetch(url, {
-        method: 'POST',
+        method: "POST",
         body: formData,
       });
 
       if (!response.ok) {
-        throw new Error('Failed to upload file');
+        throw new Error("Failed to upload file");
       }
 
       return await response.json();
@@ -57,11 +57,11 @@ export const useFileHandler = () => {
       setError(null);
 
       const response = await fetch(`${url}/${encodeURIComponent(filename)}`, {
-        method: 'DELETE',
+        method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete file');
+        throw new Error("Failed to delete file");
       }
 
       return await response.json();
